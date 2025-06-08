@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "railway",
+    name: "App",
     platforms: [
        .macOS(.v13)
     ],
@@ -20,7 +20,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "railway",
+            name: "App",
             dependencies: [
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
@@ -32,9 +32,9 @@ let package = Package(
             swiftSettings: swiftSettings
         ),
         .testTarget(
-            name: "railwayTests",
+            name: "AppTests",
             dependencies: [
-                .target(name: "railway"),
+                .target(name: "App"),
                 .product(name: "VaporTesting", package: "vapor"),
             ],
             swiftSettings: swiftSettings

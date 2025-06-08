@@ -30,7 +30,7 @@ Deploy this template to Railway with a single click:
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/dangdennis/railway-vapor-template
 cd railway
 ```
 
@@ -112,7 +112,7 @@ The app is configured for Railway deployment with:
 
 - [Vapor Documentation](https://docs.vapor.codes)
 - [Railway Documentation](https://docs.railway.app)
-- [Swift Package Manager](https://swift.org/package-manager/)
+- [Swift Package Manager](https://www.swift.org/documentation/package-manager/)
 
 ## 📄 License
 
