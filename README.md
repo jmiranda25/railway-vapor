@@ -2,7 +2,7 @@
 
 A production-ready Vapor web framework template for Railway deployment. This template includes a complete REST API with database integration, perfect for building modern web applications and APIs.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/YOUR_TEMPLATE_ID)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/JOQEiS?referralCode=mT7-6r)
 
 ## ✨ Features
 
