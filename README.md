@@ -89,7 +89,7 @@ swift test
 ## 📁 Project Structure
 
 ```
-Sources/railway/
+Sources/App/
 ├── Controllers/     # Route handlers
 ├── DTOs/           # Data transfer objects
 ├── Models/         # Database models
@@ -106,7 +106,6 @@ The app is configured for Railway deployment with:
 - Environment-based configuration
 - Production-optimized Docker builds
 - Automatic database migrations
-- Health check endpoints
 
 ## 📚 Learn More
 
