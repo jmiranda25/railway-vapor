@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:railway-vapor}",
+            "name": "Debug App",
+            "program": "${workspaceFolder:railway-vapor}/.build/debug/App",
+            "preLaunchTask": "swift: Build Debug App"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:railway-vapor}",
+            "name": "Release App",
+            "program": "${workspaceFolder:railway-vapor}/.build/release/App",
+            "preLaunchTask": "swift: Build Release App"
+        }
+    ]
+}
