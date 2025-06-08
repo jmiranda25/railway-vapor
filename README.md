@@ -5,7 +5,7 @@ A production-ready Vapor web framework template for Railway deployment. This tem
 ## ✨ Features
 
 - **Swift 6.0** with Vapor 4 web framework
-- **SQLite database** with Fluent ORM
+- **Postgres database** with Fluent ORM
 - **Leaf templating** engine for server-side rendering
 - **RESTful API** with Todo CRUD operations
 - **Docker** containerization for consistent deployment
@@ -30,6 +30,11 @@ Deploy this template to Railway with a single click:
 ```bash
 git clone https://github.com/dangdennis/railway-vapor-template
 cd railway
+```
+
+2. Run Postgres via docker compose
+```bash
+docker compose up
 ```
 
 2. Build the project:
