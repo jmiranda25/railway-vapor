@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:railway}",
+            "name": "Debug railway",
+            "program": "${workspaceFolder:railway}/.build/debug/railway",
+            "preLaunchTask": "swift: Build Debug railway"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:railway}",
+            "name": "Release railway",
+            "program": "${workspaceFolder:railway}/.build/release/railway",
+            "preLaunchTask": "swift: Build Release railway"
+        }
+    ]
+}

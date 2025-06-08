@@ -1,27 +1,119 @@
-# railway
+# Vapor Swift Web API Template
 
-💧 A project built with the Vapor web framework.
+A production-ready Vapor web framework template for Railway deployment. This template includes a complete REST API with database integration, perfect for building modern web applications and APIs.
 
-## Getting Started
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/YOUR_TEMPLATE_ID)
 
-To build the project using the Swift Package Manager, run the following command in the terminal from the root of the project:
+## ✨ Features
+
+- **Swift 6.0** with Vapor 4 web framework
+- **SQLite database** with Fluent ORM
+- **Leaf templating** engine for server-side rendering
+- **RESTful API** with Todo CRUD operations
+- **Docker** containerization for consistent deployment
+- **Production-ready** configuration with optimized builds
+
+## 🚀 One-Click Deploy
+
+Deploy this template to Railway with a single click:
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/YOUR_TEMPLATE_ID)
+
+## 🛠 Local Development
+
+### Prerequisites
+
+- Swift 6.0 or later
+- Docker (optional, for containerized development)
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone <your-repo-url>
+cd railway
+```
+
+2. Build the project:
 ```bash
 swift build
 ```
 
-To run the project and start the server, use the following command:
+3. Run the server:
 ```bash
 swift run
 ```
 
-To execute tests, use the following command:
+The server will start on `http://localhost:8080`
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/todos` | Get all todos |
+| POST | `/todos` | Create a new todo |
+| DELETE | `/todos/:id` | Delete a todo by ID |
+
+### Example Usage
+
+```bash
+# Get all todos
+curl http://localhost:8080/todos
+
+# Create a new todo
+curl -X POST http://localhost:8080/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Learn Vapor"}'
+
+# Delete a todo
+curl -X DELETE http://localhost:8080/todos/YOUR_TODO_ID
+```
+
+## 🐳 Docker
+
+Build and run with Docker:
+
+```bash
+docker build -t vapor-app .
+docker run -p 8080:8080 vapor-app
+```
+
+## 🧪 Testing
+
+Run the test suite:
+
 ```bash
 swift test
 ```
 
-### See more
+## 📁 Project Structure
 
-- [Vapor Website](https://vapor.codes)
+```
+Sources/railway/
+├── Controllers/     # Route handlers
+├── DTOs/           # Data transfer objects
+├── Models/         # Database models
+├── Migrations/     # Database migrations
+├── configure.swift # App configuration
+├── entrypoint.swift # App entry point
+└── routes.swift    # Route definitions
+```
+
+## 🔧 Configuration
+
+The app is configured for Railway deployment with:
+
+- Environment-based configuration
+- Production-optimized Docker builds
+- Automatic database migrations
+- Health check endpoints
+
+## 📚 Learn More
+
 - [Vapor Documentation](https://docs.vapor.codes)
-- [Vapor GitHub](https://github.com/vapor)
-- [Vapor Community](https://github.com/vapor-community)
+- [Railway Documentation](https://docs.railway.app)
+- [Swift Package Manager](https://swift.org/package-manager/)
+
+## 📄 License
+
+This template is available as open source under the terms of the [MIT License](LICENSE).
