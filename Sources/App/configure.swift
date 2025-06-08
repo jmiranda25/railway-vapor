@@ -9,7 +9,10 @@ public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
 
-    app.databases.use(DatabaseConfigurationFactory.sqlite(.file("db.sqlite")), as: .sqlite)
+    // Use absolute path for production, relative for development.
+    // /app is the configured volume path in the Railway template.
+    let dbPath = app.environment == .production ? "/app/db.sqlite" : "db.sqlite"
+    app.databases.use(DatabaseConfigurationFactory.sqlite(.file(dbPath)), as: .sqlite)
 
     app.migrations.add(CreateTodo())
 
