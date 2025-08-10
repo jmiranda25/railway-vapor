@@ -7,6 +7,7 @@
 
 import Fluent
 import Vapor
+import JWT
 
 final class User: Model, Content, @unchecked Sendable {
     static let schema = "users"
@@ -101,5 +102,48 @@ extension User {
             emailVerified: emailVerified,
             createdAt: createdAt
         )
+    }
+    
+    static func create(from register: RegisterUserDTO) throws -> User {
+        guard register.password == register.confirmPassword else {
+            throw Abort(.badRequest, reason: "Las contraseñas no coinciden")
+        }
+        
+        guard register.password.count >= 8 else {
+            throw Abort(.badRequest, reason: "La contraseña debe tener al menos 8 caracteres")
+        }
+        
+        let hashedPassword = try Bcrypt.hash(register.password)
+        
+        return User(
+            email: register.email,
+            passwordHash: hashedPassword,
+            firstName: register.firstName,
+            lastName: register.lastName,
+            phone: register.phone
+        )
+    }
+    
+    func generateToken(app: Application) throws -> String {
+        let payload = UserToken(userID: self.id!)
+        return try app.jwt.signers.sign(payload)
+    }
+    
+    func verifyPassword(_ password: String) throws -> Bool {
+        try Bcrypt.verify(password, created: self.passwordHash)
+    }
+}
+
+extension User: ModelAuthenticatable {
+    static var usernameKey: KeyPath<User, Field<String>> {
+        \User.$email
+    }
+    
+    static var passwordHashKey: KeyPath<User, Field<String>> {
+        \User.$passwordHash
+    }
+
+    func verify(password: String) throws -> Bool {
+        try Bcrypt.verify(password, created: self.passwordHash)
     }
 }

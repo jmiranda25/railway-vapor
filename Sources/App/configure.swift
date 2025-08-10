@@ -3,9 +3,14 @@ import Fluent
 import FluentPostgresDriver
 import Leaf
 import Vapor
+import JWT
 
 // configures your application
 public func configure(_ app: Application) throws {
+     // JWT Configuration
+     let jwtSecret = Environment.get("JWT_SECRET") ?? "proyecto-x-saas-secret-key-2025"
+     app.jwt.signers.use(.hs256(key: jwtSecret))
+     
      // Configuración de DB - Railway Environment Variables
      let hostname = Environment.get("PGHOST") ?? "localhost"
      let port = Environment.get("PGPORT").flatMap(Int.init(_:)) ?? 5432
