@@ -22,4 +22,7 @@ func routes(_ app: Application) throws {
     // Register route collections
     try app.register(collection: TodoController())
     try app.register(collection: UserController())
+    try app.register(collection: EventController())
+    try app.register(collection: StoreController())
+    try app.register(collection: ProductController())
 }
