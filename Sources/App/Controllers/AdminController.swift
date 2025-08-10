@@ -7,6 +7,7 @@
 
 import Fluent
 import Vapor
+import SQLKit
 
 // MARK: - Response DTOs
 struct SeedResponse: Content {
