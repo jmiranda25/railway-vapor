@@ -38,6 +38,12 @@ public func configure(_ app: Application) throws {
      // Mantenemos las migraciones existentes
      app.migrations.add(CreateTodo())
 
+    // Ejecutar migraciones automáticamente al iniciar la app
+    // Esto creará las tablas en la base de datos si no existen
+    print("Running migrations...")
+    try app.autoMigrate().wait()
+    print("Migrations completed.")
+
      // Comandos
      app.commands.use(SeedCommand(), as: "seed")
      
