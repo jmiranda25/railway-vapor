@@ -5,25 +5,34 @@ import Leaf
 import Vapor
 
 // configures your application
-public func configure(_ app: Application) async throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+public func configure(_ app: Application) throws {
+     // Configuración de DB - Railway Environment Variables
+     let hostname = Environment.get("PGHOST") ?? "localhost"
+     let port = Environment.get("PGPORT").flatMap(Int.init(_:)) ?? 5432
+     let username = Environment.get("PGUSER") ?? "postgres"
+     let password = Environment.get("PGPASSWORD") ?? "admin123"
+     let database = Environment.get("PGDATABASE") ?? "railway"
 
-    app.databases.use(DatabaseConfigurationFactory.postgres(configuration: .init(
-        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-        port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? SQLPostgresConfiguration.ianaPortNumber,
-        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-        database: Environment.get("DATABASE_NAME") ?? "vapor_database",
-        tls: .disable)
-    ), as: .psql)
+     let configuration = SQLPostgresConfiguration(
+         hostname: hostname,
+         port: port,
+         username: username,
+         password: password,
+         database: database,
+         tls: .disable // TLS configurado desde Railway environment
+     )
 
-    app.migrations.add(CreateTodo())
+     app.databases.use(.postgres(configuration: configuration), as: .psql,
+ isDefault: true)
 
-    app.views.use(.leaf)
+     // Migraciones - Orden importante: las tablas padre primero
+     app.migrations.add(CreateUser())
+     app.migrations.add(CreateStore())
+     app.migrations.add(CreateProduct()) // Depende de Store (foreign key)
+     app.migrations.add(CreateEvent())
+     // Mantenemos las migraciones existentes
+     app.migrations.add(CreateTodo())
 
-    try await app.autoMigrate()
-
-    // register routes
-    try routes(app)
-}
+     // Rutas
+     try routes(app)
+ }
