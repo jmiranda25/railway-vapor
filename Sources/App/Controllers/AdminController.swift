@@ -260,13 +260,10 @@ struct AdminController: RouteCollection {
             throw Abort(.internalServerError, reason: "Database does not support raw SQL queries.")
         }
 
-        // Borrar en orden inverso a la creación para respetar FKs
-        try await sql.raw("DELETE FROM products").run()
-        try await sql.raw("DELETE FROM events").run()
-        try await sql.raw("DELETE FROM stores").run()
-        try await sql.raw("DELETE FROM todos").run()
-        // Borrar todos los usuarios excepto el admin para mantener el acceso
-        try await sql.raw("DELETE FROM users WHERE email != 'admin@proyectox.com'").run()
+        // Usar TRUNCATE con CASCADE para un borrado completo y robusto, ignorando FKs.
+        // RESTART IDENTITY resetea los contadores de IDs autoincrementales.
+        // No incluimos 'users' para preservar la cuenta de admin y evitar el deadlock.
+        try await sql.raw("TRUNCATE products, events, stores, todos RESTART IDENTITY CASCADE").run()
     }
     
     private func seedUsers(_ db: any Database, count: Int) async throws -> Int {
@@ -402,6 +399,8 @@ struct AdminController: RouteCollection {
                 product.isVegan = Bool.random() && Double.random(in: 0...1) > 0.8
                 product.isGlutenFree = Bool.random() && Double.random(in: 0...1) > 0.9
                 product.isOrganic = Bool.random() && Double.random(in: 0...1) > 0.7
+                product.isSpicy = Bool.random() && Double.random(in: 0...1) > 0.7
+                product.isSponsored = i == 0 // El primer producto de cada tienda es patrocinado
                 product.ingredients = ["Ingrediente 1", "Ingrediente 2", "Ingrediente 3"]
                 product.allergens = ["Gluten"]
                 product.tags = ["Popular", "Recomendado"]

@@ -19,6 +19,7 @@ ADMIN_EMAIL="admin@proyectox.com"
 ADMIN_PASSWORD="password123"
 CLEAR_DB=false
 CUSTOM_COUNTS=false
+DELETE_ADMIN=false
 
 # Function to show usage
 show_usage() {
@@ -56,6 +57,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --clear)
             CLEAR_DB=true
+            shift
+            ;;
+        --delete-admin)
+            DELETE_ADMIN=true
             shift
             ;;
         --local)
@@ -112,6 +117,25 @@ if [ "$LOGIN_CODE" = "200" ]; then
     fi
     
     echo -e "${GREEN}🎫 JWT token obtained${NC}"
+
+    # If delete flag is set, delete the user and exit
+    if [ "$DELETE_ADMIN" = true ]; then
+        echo -e "${YELLOW}🗑️ Deleting admin user as requested...${NC}"
+        DELETE_RESPONSE=$(curl -s -w "%{http_code}" -X DELETE "$BASE_URL/api/users/account" \
+            -H "Authorization: Bearer $JWT_TOKEN" \
+            -o /tmp/delete_response.json)
+        DELETE_CODE="${DELETE_RESPONSE: -3}"
+
+        if [ "$DELETE_CODE" = "204" ]; then
+            echo -e "${GREEN}✅ Admin user successfully deleted.${NC}"
+            echo -e "${YELLOW}Please run the script again without the --delete-admin flag to re-register and seed.${NC}"
+            exit 0
+        else
+            echo -e "${RED}❌ Failed to delete admin user. HTTP Code: $DELETE_CODE${NC}"
+            cat /tmp/delete_response.json
+            exit 1
+        fi
+    fi
 else
     echo -e "${YELLOW}⚠️ Admin login failed. Attempting to create admin user...${NC}"
     
