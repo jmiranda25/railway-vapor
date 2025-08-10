@@ -10,7 +10,7 @@ public func configure(_ app: Application) throws {
      let hostname = Environment.get("PGHOST") ?? "localhost"
      let port = Environment.get("PGPORT").flatMap(Int.init(_:)) ?? 5432
      let username = Environment.get("PGUSER") ?? "postgres"
-     let password = Environment.get("PGPASSWORD") ?? "admin123"
+     let password = Environment.get("POSTGRES_PASSWORD") ?? "admin123"
      let database = Environment.get("PGDATABASE") ?? "railway"
 
      let configuration = SQLPostgresConfiguration(
