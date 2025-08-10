@@ -38,6 +38,9 @@ public func configure(_ app: Application) throws {
      // Mantenemos las migraciones existentes
      app.migrations.add(CreateTodo())
 
+     // Comandos
+     app.commands.use(SeedCommand(), as: "seed")
+     
      // Rutas
      try routes(app)
  }
