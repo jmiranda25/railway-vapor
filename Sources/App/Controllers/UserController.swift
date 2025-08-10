@@ -49,6 +49,12 @@ struct UserController: RouteCollection {
         
         // Crear nuevo usuario
         let user = try User.create(from: registerData)
+        
+        // Asignar nivel Platinum al usuario administrador para funciones de seeding
+        if user.email == "admin@proyectox.com" {
+            user.membershipLevel = .platinum
+        }
+        
         try await user.save(on: req.db)
         
         // Generar token
