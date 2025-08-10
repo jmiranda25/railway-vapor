@@ -255,12 +255,17 @@ struct AdminController: RouteCollection {
     // MARK: - Helper Functions (copied from SeedCommand)
     
     private func clearDatabase(_ db: any Database) async throws {
-        try await Product.query(on: db).delete()
-        try await Event.query(on: db).delete()
-        try await Store.query(on: db).delete()
-        // Don't delete all users, just non-admin ones to preserve access
-        try await User.query(on: db).filter(\.$email != "admin@proyectox.com").delete()
-        try await Todo.query(on: db).delete()
+        guard let sql = db as? SQLDatabase else {
+            throw Abort(.internalServerError, reason: "Database does not support raw SQL queries.")
+        }
+
+        // Borrar en orden inverso a la creación para respetar FKs
+        try await sql.raw("DELETE FROM products").run()
+        try await sql.raw("DELETE FROM events").run()
+        try await sql.raw("DELETE FROM stores").run()
+        try await sql.raw("DELETE FROM todos").run()
+        // Borrar todos los usuarios excepto el admin para mantener el acceso
+        try await sql.raw("DELETE FROM users WHERE email != 'admin@proyectox.com'").run()
     }
     
     private func seedUsers(_ db: any Database, count: Int) async throws -> Int {
