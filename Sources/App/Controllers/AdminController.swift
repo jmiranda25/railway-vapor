@@ -256,7 +256,7 @@ struct AdminController: RouteCollection {
     // MARK: - Helper Functions (copied from SeedCommand)
     
     private func clearDatabase(_ db: any Database) async throws {
-        guard let sql = db as? SQLDatabase else {
+        guard let sql = db as? any SQLDatabase else {
             throw Abort(.internalServerError, reason: "Database does not support raw SQL queries.")
         }
 
